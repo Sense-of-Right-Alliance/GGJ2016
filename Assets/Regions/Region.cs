@@ -46,4 +46,18 @@ public class Region
             spell.GameUpdateTick(VisitingWizards);
         }
     }
+
+    public void AddWizard(Wizard wizard)
+    {
+        if (wizard.CurrentSpell != null && !AllSpells.ContainsKey(wizard.CurrentSpell.Id))
+        {
+            IntroduceSpell(wizard.CurrentSpell);
+        }
+        VisitingWizards.Add(wizard);
+    }
+
+    public void RemoveWizard(Wizard wizard)
+    {
+        VisitingWizards.Remove(wizard);
+    }
 }

@@ -17,6 +17,10 @@ public class Spell
     public SpellObject Object { get; private set; }
 
     public SpellDescriptor Descriptor { get; private set; }
+    
+    public Dictionary<Region, RegionalSpell> RegionalSpells { get; private set; }
+
+    public double TotalInfamy { get { return RegionalSpells.Sum(kvp => kvp.Value.Infamy); } }
 
     public Spell(int id, Wizard wizard, SpellDescriptor descriptor, SpellObject obj)
     {
@@ -24,5 +28,6 @@ public class Spell
         this.Wizard = wizard;
         this.Descriptor = descriptor;
         this.Object = obj;
+        this.RegionalSpells = new Dictionary<Region, RegionalSpell>();
     }
 }

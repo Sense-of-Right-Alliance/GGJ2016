@@ -90,11 +90,11 @@ public class GameManager : MonoBehaviour
 
         if (currentRegion != null)
         {
-            currentRegion.VisitingWizards.Remove(playerWizard);
+            currentRegion.RemoveWizard(playerWizard);
             //Debug.Log("Removed from " + currentRegion.InternalName + " updated visiters = " + currentRegion.VisitingWizards.Count);
         }
-        
-        targetRegion.VisitingWizards.Add(playerWizard);
+
+        targetRegion.AddWizard(playerWizard);
         currentRegion = targetRegion;
 
         //Debug.Log("Clicked to travel to the " + currentRegion.InternalName + " region! updated visiters = " + currentRegion.VisitingWizards.Count);
