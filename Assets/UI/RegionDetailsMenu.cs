@@ -2,10 +2,12 @@
 using UnityEngine.UI;
 using System.Collections;
 
-public class RegionDetailsMenu : MonoBehaviour {
+public class RegionDetailsMenu : MonoBehaviour
+{
 
     string region = "Mountain";
     public Text nameText;
+    public RegionSpellsUI regionSpellsUI;
 
     void Start()
     {
@@ -13,6 +15,9 @@ public class RegionDetailsMenu : MonoBehaviour {
 
         if (!nameText)
             nameText = transform.FindChild("Name").GetComponent<Text>();
+
+        if (!regionSpellsUI)
+            regionSpellsUI = transform.FindChild("Region Spells").GetComponent<RegionSpellsUI>();
     }
 
     public string Region
@@ -20,7 +25,7 @@ public class RegionDetailsMenu : MonoBehaviour {
         get { return region; }
     }
 
-	public void Init(string region)
+    public void Init(string region)
     {
         this.region = region;
 
@@ -32,5 +37,10 @@ public class RegionDetailsMenu : MonoBehaviour {
     public void Hide()
     {
         gameObject.SetActive(false);
+    }
+
+    public void UpdateUI()
+    {
+        regionSpellsUI.UpdateSpells();
     }
 }

@@ -14,9 +14,18 @@ public class GameManager : MonoBehaviour
     public List<Spell> allSpells = new List<Spell>();
 
     public MenuManager menuManager;
+    //public WizardDetailsUI wizardDetailsUI;
     public SpellHistoryMenu spellHistoryMenu;
     public RegionDetailsMenu regionDetailsMenu;
     public NotificationManager notificationManager;
+
+    public float agingMultiplier = 1f;
+
+    Wizard playerWizard;
+    public Wizard PlayerWizard
+    {
+        get { return playerWizard; }
+    }
 
     SpellManager spellManager;
     WizardManager wizardManager;
@@ -34,6 +43,9 @@ public class GameManager : MonoBehaviour
 
         if (!regionDetailsMenu)
             regionDetailsMenu = GameObject.FindObjectOfType<RegionDetailsMenu>();
+
+       // if (!wizardDetailsUI)
+       //     wizardDetailsUI = GameObject.FindObjectOfType<WizardDetailsUI>();
 
         spellManager = GetComponent<SpellManager>();
         wizardManager = GetComponent<WizardManager>();
@@ -58,13 +70,14 @@ public class GameManager : MonoBehaviour
     {
         if (wizardNameField && wizardNameField.text != "")
         {
-            var wizard = wizardManager.GenerateWizard(wizardName);
+            playerWizard = wizardManager.GenerateWizard(wizardName);
 
-            currentSpell = spellManager.GenerateRandomSpell(wizard);
+            currentSpell = spellManager.GenerateRandomSpell(playerWizard);
             
             allSpells.Add(currentSpell);
 
             notificationManager.QueueNotification("You've researched the " + currentSpell.Name + " spell!");
+            notificationManager.QueueNotification("Promote your spell! You can change which region you're promoting in by clicking the region icon.", 8f);
 
             spellHistoryMenu.UpdateSpellList();
 
@@ -81,17 +94,34 @@ public class GameManager : MonoBehaviour
     float popularityIntervalTimer = 0f;
     void Update()
     {
+        if (gameOver) return;
+
         popularityIntervalTimer -= Time.deltaTime;
         if (popularityIntervalTimer <= 0f)
         {
+            if (playerWizard != null) playerWizard.AgeWizard(Time.deltaTime*10f*agingMultiplier); // every second is a 5th of a wizard year
+
             BroadcastMessage("PopularityTick"); // tell listening classes to update properties relative to your spells popularity
 
+            gameObject.SendMessage("UpdateUI");
             popularityIntervalTimer = POPULARITY_INTERVAL;
+
+            CheckGameEnd();
         }
     }
 
     void PopularityTick()
     {
         //Debug.Log("Popularity Ticked!");
+    }
+
+    bool gameOver = false;
+    void CheckGameEnd()
+    {
+        if (playerWizard != null && playerWizard.Age >= 200)
+        {
+            gameOver = true;
+            gameObject.SendMessage("OnGameOver");
+        }
     }
 }

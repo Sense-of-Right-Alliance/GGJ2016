@@ -21,4 +21,11 @@ public class WizardManager : MonoBehaviour
         Wizards.Add(wiz.Id, wiz);
         return wiz;
     }
+
+    void PopularityTick()
+    {
+        //Debug.Log("Updating Wizards (Age)");
+
+        // todo: update all the ACTIVE wizards ages.
+    }
 }

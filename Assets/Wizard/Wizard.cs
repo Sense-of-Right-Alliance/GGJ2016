@@ -18,10 +18,29 @@ public class Wizard
                 return Name + "'s";
         }
     }
+    float age = 50;
+    public int Age
+    {
+        get { return (int)Math.Floor(age); }
+    }
+
+    public int Notoriety
+    {
+        get
+        {
+            return 1;
+        }
+    }
 
     public Wizard(int id, string name)
     {
         this.Id = id;
         this.Name = name;
+    }
+
+    public void AgeWizard(float time)
+    {
+        age += time;
+        //Debug.Log("aging wizard ; age=" + age + " time= " + time);
     }
 }
