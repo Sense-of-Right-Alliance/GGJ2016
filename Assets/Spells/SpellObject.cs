@@ -7,15 +7,15 @@ public class SpellObject
 {
     public string Name { get; private set; }
 
-    Dictionary<string, float> opinions;
+    Dictionary<string, double> opinions;
 
-    public SpellObject(string name, Dictionary<string, float> opinions)
+    public SpellObject(string name, Dictionary<string, double> opinions)
     {
         this.Name = name;
         this.opinions = opinions;
     }
 
-    public float GetOpinion(Region region)
+    public double GetOpinion(Region region)
     {
         if (!opinions.ContainsKey(region.InternalName))
             throw new ArgumentException("No opinion data available for region " + region.InternalName + " (" + region.DisplayedName + ")");

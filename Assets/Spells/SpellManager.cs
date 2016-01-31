@@ -10,6 +10,7 @@ public class SpellManager : MonoBehaviour
     public IEnumerable<SpellObject> SpellObjects { get; private set; }
 
     RegionManager regionManager;
+    WizardManager wizardManager;
 
     public SpellManager()
     {
@@ -20,14 +21,15 @@ public class SpellManager : MonoBehaviour
     public void Awake()
     {
         regionManager = GetComponent<RegionManager>();
+        wizardManager = GetComponent<WizardManager>();
     }
 
-    public Spell GenerateRandomSpell(string wizardName)
+    public Spell GenerateRandomSpell(Wizard wizard)
     {
         var rand = new System.Random();
         var descriptor = SpellDescriptors.ElementAt(rand.Next(SpellDescriptors.Count()));
         var obj = SpellObjects.ElementAt(rand.Next(SpellObjects.Count()));
 
-        return new Spell(wizardName, descriptor, obj);
+        return new Spell(wizard, descriptor, obj);
     }
 }
