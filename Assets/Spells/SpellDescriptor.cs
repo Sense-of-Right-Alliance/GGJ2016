@@ -13,12 +13,12 @@ public class SpellDescriptor
     {
         this.Name = name;
         this.opinions = opinions;
-
-        //foreach (var opinion in opinions)
-        //{
-        //    var random = Utility.GetRandom(opinion.Key, name);
-        //    opinions[opinion.Key] = opinion.Value + random.NextDouble().Between(-1.5, 1.5);
-        //}
+        
+        foreach (var region in opinions.Keys.ToList())
+        {
+            var random = Utility.GetRandom(region, name);
+            opinions[region] += random.NextDouble().Between(-1.5, 1.5);
+        }
     }
 
     public double GetOpinion(Region region)
