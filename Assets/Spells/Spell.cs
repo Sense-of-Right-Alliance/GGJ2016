@@ -5,6 +5,8 @@ using System;
 
 public class Spell
 {
+    public int Id { get; private set; }
+
     public string Name
     {
         get { return string.Format("{0} {1} {2}", Wizard.PosessiveName, Descriptor.Name, Object.Name);  }
@@ -16,8 +18,9 @@ public class Spell
 
     public SpellDescriptor Descriptor { get; private set; }
 
-    public Spell(Wizard wizard, SpellDescriptor descriptor, SpellObject obj)
+    public Spell(int id, Wizard wizard, SpellDescriptor descriptor, SpellObject obj)
     {
+        this.Id = id;
         this.Wizard = wizard;
         this.Descriptor = descriptor;
         this.Object = obj;

@@ -12,6 +12,8 @@ public class SpellManager : MonoBehaviour
     RegionManager regionManager;
     WizardManager wizardManager;
 
+    int nextId = 0;
+
     public SpellManager()
     {
         SpellDescriptors = SpellParser.FetchDescriptors();
@@ -30,6 +32,6 @@ public class SpellManager : MonoBehaviour
         var descriptor = SpellDescriptors.ElementAt(rand.Next(SpellDescriptors.Count()));
         var obj = SpellObjects.ElementAt(rand.Next(SpellObjects.Count()));
 
-        return new Spell(wizard, descriptor, obj);
+        return new Spell(nextId++, wizard, descriptor, obj);
     }
 }

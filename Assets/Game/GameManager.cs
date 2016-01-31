@@ -10,7 +10,6 @@ public class GameManager : MonoBehaviour
     public InputField wizardNameField;
 
     public string wizardName;
-    public Spell currentSpell;
     public List<Spell> allSpells = new List<Spell>();
 
     public MenuManager menuManager;
@@ -59,12 +58,11 @@ public class GameManager : MonoBehaviour
         if (wizardNameField && wizardNameField.text != "")
         {
             var wizard = wizardManager.GenerateWizard(wizardName);
-
-            currentSpell = spellManager.GenerateRandomSpell(wizard);
+            wizard.CurrentSpell = spellManager.GenerateRandomSpell(wizard);
             
-            allSpells.Add(currentSpell);
+            allSpells.Add(wizard.CurrentSpell);
 
-            notificationManager.QueueNotification("You've researched the " + currentSpell.Name + " spell!");
+            notificationManager.QueueNotification("You've researched the " + wizard.CurrentSpell.Name + " spell!");
 
             spellHistoryMenu.UpdateSpellList();
 

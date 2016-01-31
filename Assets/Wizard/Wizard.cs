@@ -19,6 +19,24 @@ public class Wizard
         }
     }
 
+    public List<Spell> PastSpells = new List<Spell>();
+
+    Spell currentSpell = null;
+    public Spell CurrentSpell
+    {
+        get
+        {
+            return currentSpell;
+        }
+        set
+        {
+            if (currentSpell != null)
+                PastSpells.Add(currentSpell);
+
+            currentSpell = value;
+        }
+    }
+
     public Wizard(int id, string name)
     {
         this.Id = id;
