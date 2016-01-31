@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     public MenuManager menuManager;
     public SpellMenu spellMenu;
 
+    SpellManager spellManager;
 
     public void Start()
     {
@@ -22,6 +23,8 @@ public class GameManager : MonoBehaviour
 
         if (!spellMenu)
             spellMenu = GameObject.FindObjectOfType<SpellMenu>();
+
+        spellManager = GetComponent<SpellManager>();
     }
 
     public void MapNodeClicked(string region)
@@ -35,7 +38,7 @@ public class GameManager : MonoBehaviour
         {
             wizardName = wizardNameField.text;
 
-            spell = Spell.GenerateRandomSpell(wizardName);
+            spell = spellManager.GenerateRandomSpell(wizardName);
 
             spellMenu.SetSpellName(spell);
 
@@ -57,6 +60,6 @@ public class GameManager : MonoBehaviour
 
     void PopularityTick()
     {
-        Debug.Log("Popularity Ticked!");
+        //Debug.Log("Popularity Ticked!");
     }
 }
