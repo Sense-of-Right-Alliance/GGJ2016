@@ -10,7 +10,6 @@ public class GameManager : MonoBehaviour
     public InputField wizardNameField;
 
     public string wizardName;
-    public Spell currentSpell;
     public List<Spell> allSpells = new List<Spell>();
 
     public MenuManager menuManager;
@@ -72,11 +71,11 @@ public class GameManager : MonoBehaviour
         {
             playerWizard = wizardManager.GenerateWizard(wizardName);
 
-            currentSpell = spellManager.GenerateRandomSpell(playerWizard);
+            playerWizard.CurrentSpell = spellManager.GenerateRandomSpell(playerWizard);
             
-            allSpells.Add(currentSpell);
+            allSpells.Add(playerWizard.CurrentSpell);
 
-            notificationManager.QueueNotification("You've researched the " + currentSpell.Name + " spell!");
+            notificationManager.QueueNotification("You've researched the " + playerWizard.CurrentSpell.Name + " spell!");
             notificationManager.QueueNotification("Promote your spell! You can change which region you're promoting in by clicking the region icon.", 8f);
 
             spellHistoryMenu.UpdateSpellList();

@@ -8,7 +8,7 @@ public class WizardManager : MonoBehaviour
 {
     public Dictionary<int, Wizard> Wizards { get; private set; }
 
-    int nextWizardId = 0;
+    int nextId = 0;
 
     public WizardManager()
     {
@@ -17,7 +17,7 @@ public class WizardManager : MonoBehaviour
 
     public Wizard GenerateWizard(string name)
     {
-        var wiz = new Wizard(nextWizardId++, name);
+        var wiz = new Wizard(nextId++, name);
         Wizards.Add(wiz.Id, wiz);
         return wiz;
     }

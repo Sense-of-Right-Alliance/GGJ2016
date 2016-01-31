@@ -13,6 +13,12 @@ public class SpellDescriptor
     {
         this.Name = name;
         this.opinions = opinions;
+
+        //foreach (var opinion in opinions)
+        //{
+        //    var random = Utility.GetRandom(opinion.Key, name);
+        //    opinions[opinion.Key] = opinion.Value + random.NextDouble().Between(-1.5, 1.5);
+        //}
     }
 
     public double GetOpinion(Region region)
@@ -22,9 +28,4 @@ public class SpellDescriptor
 
         return opinions[region.InternalName];
     }
-
-    //public string GetOpinionStrings()
-    //{
-    //    return string.Join(" ", opinions.Values.Select(u => u.ToString("f0")).ToArray());
-    //}
 }

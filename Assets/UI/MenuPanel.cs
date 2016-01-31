@@ -13,15 +13,15 @@ public class MenuPanel : MonoBehaviour {
     private enum MenuTransitionState { on, off, tOn, tOff };
     private MenuTransitionState state = MenuTransitionState.off;
 
-    private TransitionDir currentDir = TransitionDir.Right;
+    //private TransitionDir currentDir = TransitionDir.Right;
     private MenuManager.MenuTransitionType transitionType;
-    private float speed = 600.0f;
+    //private float speed = 600.0f;
 
     TransitionCallbackDelegate callback;
 
     public void TransitionOn(MenuManager.MenuTransitionType transitionType, TransitionDir dir=TransitionDir.Left,  TransitionCallbackDelegate callback = null, float speed=600.0f)
     {
-        this.speed = 600.0f;
+        //this.speed = 600.0f;
         this.transitionType = transitionType;
         this.callback = callback;
         TransitionOnInternal(dir);
