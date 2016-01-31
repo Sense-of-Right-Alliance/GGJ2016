@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
@@ -9,10 +10,12 @@ public class GameManager : MonoBehaviour
     public InputField wizardNameField;
 
     public string wizardName;
-    public Spell spell;
+    public Spell currentSpell;
+    public List<Spell> allSpells = new List<Spell>();
 
     public MenuManager menuManager;
-    public SpellMenu spellMenu;
+    public SpellHistoryMenu spellHistoryMenu;
+    public NotificationManager notificationManager;
 
     SpellManager spellManager;
 
@@ -21,8 +24,11 @@ public class GameManager : MonoBehaviour
         if (!menuManager)
             menuManager = GameObject.FindObjectOfType<MenuManager>();
 
-        if (!spellMenu)
-            spellMenu = GameObject.FindObjectOfType<SpellMenu>();
+        if (!notificationManager)
+            notificationManager = GameObject.FindObjectOfType<NotificationManager>();
+
+        if (!spellHistoryMenu)
+            spellHistoryMenu = GameObject.FindObjectOfType<SpellHistoryMenu>();
 
         spellManager = GetComponent<SpellManager>();
     }
@@ -37,12 +43,24 @@ public class GameManager : MonoBehaviour
         if (wizardNameField && wizardNameField.text != "")
         {
             wizardName = wizardNameField.text;
-
-            spell = spellManager.GenerateRandomSpell(wizardName);
-
-            spellMenu.SetSpellName(spell);
-
+            
             menuManager.ShowNextScreen();
+        }
+    }
+
+    public void ResearchNewSpellClicked(bool fromFirstScreen=false)
+    {
+        if (wizardNameField && wizardNameField.text != "")
+        {
+            currentSpell = spellManager.GenerateRandomSpell(wizardName);
+
+            allSpells.Add(currentSpell);
+
+            notificationManager.QueueNotification("You've researched the " + currentSpell.Name + " spell!");
+
+            spellHistoryMenu.UpdateSpellList();
+
+            if (fromFirstScreen) menuManager.HideScreen();
         }
     }
 
