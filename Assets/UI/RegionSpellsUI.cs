@@ -13,15 +13,18 @@ public class RegionSpellsUI : MonoBehaviour
 
     List<GameObject> listItems = new List<GameObject>();
 
+    Region currentRegion;
+
     // Use this for initialization
     void Start () {
 	
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+
+    public void Init(Region region)
+    {
+        currentRegion = region;
+        RefreshSpellList();
+    }
 
     public void UpdateSpells()
     {
@@ -35,14 +38,14 @@ public class RegionSpellsUI : MonoBehaviour
     {
         ClearSpellListItems();
 
-        List<Spell> spells = gameManager.allSpells;
+        IEnumerable<RegionalSpell> topSpells = currentRegion.TopSpells;
 
         GameObject listItem;
-        for (int i = 0; i < spells.Count; i++)
+        foreach(RegionalSpell spell in topSpells)
         {
             listItem = (GameObject)Instantiate(regionSpellListItem, Vector3.zero, Quaternion.identity);
             listItem.transform.SetParent(spellList.transform, false);
-            listItem.GetComponent<Text>().text = spells[i].Name;
+            listItem.GetComponent<Text>().text = spell.Spell.Name;
 
             listItems.Add(listItem);
         }

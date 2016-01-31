@@ -25,9 +25,11 @@ public class GameManager : MonoBehaviour
     {
         get { return playerWizard; }
     }
+    Region currentRegion;
 
     SpellManager spellManager;
     WizardManager wizardManager;
+    RegionManager regionManager;
 
     public void Awake()
     {
@@ -48,11 +50,7 @@ public class GameManager : MonoBehaviour
 
         spellManager = GetComponent<SpellManager>();
         wizardManager = GetComponent<WizardManager>();
-    }
-
-    public void MapNodeClicked(string region)
-    {
-        regionDetailsMenu.Init(region);
+        regionManager = GetComponent<RegionManager>();
     }
 
     public void ConfirmWizardNameClicked()
@@ -80,14 +78,26 @@ public class GameManager : MonoBehaviour
 
             spellHistoryMenu.UpdateSpellList();
 
+            //AddRandomSpellsToAllRegions(); // for testing
+
             if (fromFirstScreen) menuManager.HideScreen();
         }
     }
 
-    public void TravelToRegionClicked()
+    public void TravelToRegionClicked(RegionDetailsMenu targetRegionMenu)
     {
-        string region = regionDetailsMenu.Region;
-        Debug.Log("Clicked to travel to the " + region + " region!");
+        Region targetRegion = targetRegionMenu.CurrentRegion;
+
+        if (currentRegion != null)
+        {
+            currentRegion.VisitingWizards.Remove(playerWizard);
+            //Debug.Log("Removed from " + currentRegion.InternalName + " updated visiters = " + currentRegion.VisitingWizards.Count);
+        }
+        
+        targetRegion.VisitingWizards.Add(playerWizard);
+        currentRegion = targetRegion;
+  
+        //Debug.Log("Clicked to travel to the " + currentRegion.InternalName + " region! updated visiters = " + currentRegion.VisitingWizards.Count);
     }
 
     float popularityIntervalTimer = 0f;
@@ -121,6 +131,17 @@ public class GameManager : MonoBehaviour
         {
             gameOver = true;
             gameObject.SendMessage("OnGameOver");
+        }
+    }
+
+    // for testing
+    public void AddRandomSpellsToAllRegions()
+    {
+        Wizard wiz;
+        foreach (Region r in regionManager.Regions)
+        {
+            wiz = wizardManager.GenerateWizard("Tester Wiz");
+            r.IntroduceSpell(spellManager.GenerateRandomSpell(wiz));
         }
     }
 }
