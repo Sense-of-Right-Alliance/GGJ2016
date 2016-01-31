@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
     public SpellHistoryMenu spellHistoryMenu;
     public NotificationManager notificationManager;
 
+    SpellManager spellManager;
 
     public void Start()
     {
@@ -28,6 +29,8 @@ public class GameManager : MonoBehaviour
 
         if (!spellHistoryMenu)
             spellHistoryMenu = GameObject.FindObjectOfType<SpellHistoryMenu>();
+
+        spellManager = GetComponent<SpellManager>();
     }
 
     public void MapNodeClicked(string region)
@@ -49,7 +52,7 @@ public class GameManager : MonoBehaviour
     {
         if (wizardNameField && wizardNameField.text != "")
         {
-            currentSpell = Spell.GenerateRandomSpell(wizardName);
+            currentSpell = spellManager.GenerateRandomSpell(wizardName);
 
             allSpells.Add(currentSpell);
 

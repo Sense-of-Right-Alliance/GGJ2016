@@ -1,0 +1,16 @@
+	Swamp	Coast	City	Desert	Mountain	Volcano	Haunted
+Flaming	3	0	0	4	0	2	3
+Slimey	0	1	4	4	0	1	3
+Damp	3	3	4	1	1	0	1
+Shocking	4	2	0	2	1	0	4
+Fanciful	2	0	2	2	0	3	3
+Glowing	0	0	3	1	1	2	4
+Old	4	2	4	1	0	2	0
+Frightening	4	2	1	4	2	0	2
+Terrible	4	2	0	3	4	1	1
+Foul	0	3	2	1	0	2	1
+Blinding	1	1	3	0	1	0	1
+Deafening	2	2	3	0	2	0	1
+Heavy	1	1	0	1	1	0	1
+Dazzling	3	1	2	4	3	1	2
+Lustful	3	0	2	1	4	2	4
