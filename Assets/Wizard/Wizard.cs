@@ -23,12 +23,12 @@ public class Wizard
     {
         get { return (int)Math.Floor(age); }
     }
-
+    
     public int Notoriety
     {
         get
         {
-            return 1;
+            return (int)(PastSpells.Sum(s => s.TotalInfamy) + CurrentSpell.TotalInfamy);
         }
     }
 

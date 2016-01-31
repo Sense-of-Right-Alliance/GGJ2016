@@ -57,6 +57,8 @@ public class RegionalSpell
     public RegionalSpell(Spell spell, Region region, int ticks, double infamy)
     {
         this.Spell = spell;
+        spell.RegionalSpells[region] = this;
+
         this.Region = region;
         this.ticks = ticks;
         this.Infamy = infamy;
@@ -67,8 +69,17 @@ public class RegionalSpell
 
     public void GameUpdateTick(IEnumerable<Wizard> wizards)
     {
-        if (wizards.Any(w => w.CurrentSpell == Spell))
-            Exposure += 0.002;
+        if (Exposure < 1.0 && wizards.Any(w => w.CurrentSpell == Spell))
+        {
+            if (Exposure + 0.002 > 1.0)
+            {
+                Exposure = 1.0;
+            }
+            else
+            { 
+                Exposure += 0.002;
+            }
+        }
 
         // TODO: increase local exposure
         // TODO: increase exposure in neighbouring regions
