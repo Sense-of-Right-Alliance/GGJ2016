@@ -15,11 +15,12 @@ public class GameManager : MonoBehaviour
 
     public MenuManager menuManager;
     public SpellHistoryMenu spellHistoryMenu;
+    public RegionDetailsMenu regionDetailsMenu;
     public NotificationManager notificationManager;
 
     SpellManager spellManager;
 
-    public void Start()
+    public void Awake()
     {
         if (!menuManager)
             menuManager = GameObject.FindObjectOfType<MenuManager>();
@@ -30,12 +31,15 @@ public class GameManager : MonoBehaviour
         if (!spellHistoryMenu)
             spellHistoryMenu = GameObject.FindObjectOfType<SpellHistoryMenu>();
 
+        if (!regionDetailsMenu)
+            regionDetailsMenu = GameObject.FindObjectOfType<RegionDetailsMenu>();
+
         spellManager = GetComponent<SpellManager>();
     }
 
     public void MapNodeClicked(string region)
     {
-        Debug.Log(region + " Clicked!");
+        regionDetailsMenu.Init(region);
     }
 
     public void ConfirmWizardNameClicked()
@@ -62,6 +66,12 @@ public class GameManager : MonoBehaviour
 
             if (fromFirstScreen) menuManager.HideScreen();
         }
+    }
+
+    public void TravelToRegionClicked()
+    {
+        string region = regionDetailsMenu.Region;
+        Debug.Log("Clicked to travel to the " + region + " region!");
     }
 
     float popularityIntervalTimer = 0f;
