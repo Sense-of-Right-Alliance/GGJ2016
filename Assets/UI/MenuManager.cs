@@ -1,7 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class MenuManager : MonoBehaviour {
+public class MenuManager : MonoBehaviour
+{ 
+    public enum MenuTransitionType { Instant, Fade, Slide }
+
+    public MenuTransitionType transitionType;
 
     public MenuPanel[] menus;
 
@@ -15,11 +19,6 @@ public class MenuManager : MonoBehaviour {
         }
         ShowScreen(0, MenuPanel.TransitionDir.Right);
     }
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 
     public void ShowNextScreen()
     {
@@ -33,19 +32,19 @@ public class MenuManager : MonoBehaviour {
 
     public void HideScreen()
     {
-        if (screenIndex >= 0) menus[screenIndex].TransitionOff(MenuPanel.TransitionDir.Right);
+        if (screenIndex >= 0) menus[screenIndex].TransitionOff(transitionType, MenuPanel.TransitionDir.Right);
     }
 
     public void ShowScreen(int index, MenuPanel.TransitionDir dir)
     {
         Debug.Log("Showing screen " + index);
-        if (screenIndex >= 0) menus[screenIndex].TransitionOff(dir);
+        if (screenIndex >= 0) menus[screenIndex].TransitionOff(transitionType, dir);
 
         screenIndex = index;
-        menus[screenIndex].TransitionOn(dir);
+        menus[screenIndex].TransitionOn(transitionType, dir);
     }
     public void HideAllScreens(MenuPanel.TransitionCallbackDelegate callback)
     {
-        if (screenIndex >= 0) menus[screenIndex].TransitionOff(MenuPanel.TransitionDir.Right, callback);
+        if (screenIndex >= 0) menus[screenIndex].TransitionOff(transitionType, MenuPanel.TransitionDir.Right, callback);
     }
 }

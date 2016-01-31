@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
@@ -9,21 +10,30 @@ public class GameManager : MonoBehaviour
     public InputField wizardNameField;
 
     public string wizardName;
-    public Spell spell;
+    public Spell currentSpell;
+    public List<Spell> allSpells = new List<Spell>();
 
     public MenuManager menuManager;
-    public SpellMenu spellMenu;
+    public SpellHistoryMenu spellHistoryMenu;
+    public RegionDetailsMenu regionDetailsMenu;
+    public NotificationManager notificationManager;
 
     SpellManager spellManager;
     WizardManager wizardManager;
 
-    public void Start()
+    public void Awake()
     {
         if (!menuManager)
             menuManager = GameObject.FindObjectOfType<MenuManager>();
 
-        if (!spellMenu)
-            spellMenu = GameObject.FindObjectOfType<SpellMenu>();
+        if (!notificationManager)
+            notificationManager = GameObject.FindObjectOfType<NotificationManager>();
+
+        if (!spellHistoryMenu)
+            spellHistoryMenu = GameObject.FindObjectOfType<SpellHistoryMenu>();
+
+        if (!regionDetailsMenu)
+            regionDetailsMenu = GameObject.FindObjectOfType<RegionDetailsMenu>();
 
         spellManager = GetComponent<SpellManager>();
         wizardManager = GetComponent<WizardManager>();
@@ -31,7 +41,7 @@ public class GameManager : MonoBehaviour
 
     public void MapNodeClicked(string region)
     {
-        Debug.Log(region + " Clicked!");
+        regionDetailsMenu.Init(region);
     }
 
     public void ConfirmWizardNameClicked()
@@ -39,15 +49,33 @@ public class GameManager : MonoBehaviour
         if (wizardNameField && wizardNameField.text != "")
         {
             wizardName = wizardNameField.text;
-
-            var wizard = wizardManager.GenerateWizard(wizardName);
-
-            spell = spellManager.GenerateRandomSpell(wizard);
-
-            spellMenu.SetSpellName(spell);
-
+            
             menuManager.ShowNextScreen();
         }
+    }
+
+    public void ResearchNewSpellClicked(bool fromFirstScreen=false)
+    {
+        if (wizardNameField && wizardNameField.text != "")
+        {
+            var wizard = wizardManager.GenerateWizard(wizardName);
+
+            currentSpell = spellManager.GenerateRandomSpell(wizard);
+            
+            allSpells.Add(currentSpell);
+
+            notificationManager.QueueNotification("You've researched the " + currentSpell.Name + " spell!");
+
+            spellHistoryMenu.UpdateSpellList();
+
+            if (fromFirstScreen) menuManager.HideScreen();
+        }
+    }
+
+    public void TravelToRegionClicked()
+    {
+        string region = regionDetailsMenu.Region;
+        Debug.Log("Clicked to travel to the " + region + " region!");
     }
 
     float popularityIntervalTimer = 0f;
