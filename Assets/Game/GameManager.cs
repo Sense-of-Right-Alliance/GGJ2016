@@ -13,12 +13,23 @@ public class GameManager : MonoBehaviour
     public List<Spell> allSpells = new List<Spell>();
 
     public MenuManager menuManager;
+    //public WizardDetailsUI wizardDetailsUI;
     public SpellHistoryMenu spellHistoryMenu;
     public RegionDetailsMenu regionDetailsMenu;
     public NotificationManager notificationManager;
 
+    public float agingMultiplier = 1f;
+
+    Wizard playerWizard;
+    public Wizard PlayerWizard
+    {
+        get { return playerWizard; }
+    }
+    Region currentRegion;
+
     SpellManager spellManager;
     WizardManager wizardManager;
+    RegionManager regionManager;
 
     public void Awake()
     {
@@ -34,13 +45,12 @@ public class GameManager : MonoBehaviour
         if (!regionDetailsMenu)
             regionDetailsMenu = GameObject.FindObjectOfType<RegionDetailsMenu>();
 
+       // if (!wizardDetailsUI)
+       //     wizardDetailsUI = GameObject.FindObjectOfType<WizardDetailsUI>();
+
         spellManager = GetComponent<SpellManager>();
         wizardManager = GetComponent<WizardManager>();
-    }
-
-    public void MapNodeClicked(string region)
-    {
-        regionDetailsMenu.Init(region);
+        regionManager = GetComponent<RegionManager>();
     }
 
     public void ConfirmWizardNameClicked()
@@ -57,39 +67,81 @@ public class GameManager : MonoBehaviour
     {
         if (wizardNameField && wizardNameField.text != "")
         {
-            var wizard = wizardManager.GenerateWizard(wizardName);
-            wizard.CurrentSpell = spellManager.GenerateRandomSpell(wizard);
-            
-            allSpells.Add(wizard.CurrentSpell);
+            playerWizard = wizardManager.GenerateWizard(wizardName);
 
-            notificationManager.QueueNotification("You've researched the " + wizard.CurrentSpell.Name + " spell!");
+            playerWizard.CurrentSpell = spellManager.GenerateRandomSpell(playerWizard);
+            
+            allSpells.Add(playerWizard.CurrentSpell);
+
+            notificationManager.QueueNotification("You've researched the " + playerWizard.CurrentSpell.Name + " spell!");
+            notificationManager.QueueNotification("Promote your spell! You can change which region you're promoting in by clicking the region icon.", 8f);
 
             spellHistoryMenu.UpdateSpellList();
+
+            //AddRandomSpellsToAllRegions(); // for testing
 
             if (fromFirstScreen) menuManager.HideScreen();
         }
     }
 
-    public void TravelToRegionClicked()
+    public void TravelToRegionClicked(RegionDetailsMenu targetRegionMenu)
     {
-        string region = regionDetailsMenu.Region;
-        Debug.Log("Clicked to travel to the " + region + " region!");
+        Region targetRegion = targetRegionMenu.CurrentRegion;
+
+        if (currentRegion != null)
+        {
+            currentRegion.VisitingWizards.Remove(playerWizard);
+            //Debug.Log("Removed from " + currentRegion.InternalName + " updated visiters = " + currentRegion.VisitingWizards.Count);
+        }
+        
+        targetRegion.VisitingWizards.Add(playerWizard);
+        currentRegion = targetRegion;
+  
+        //Debug.Log("Clicked to travel to the " + currentRegion.InternalName + " region! updated visiters = " + currentRegion.VisitingWizards.Count);
     }
 
     float popularityIntervalTimer = 0f;
     void Update()
     {
+        if (gameOver) return;
+
         popularityIntervalTimer -= Time.deltaTime;
         if (popularityIntervalTimer <= 0f)
         {
+            if (playerWizard != null) playerWizard.AgeWizard(Time.deltaTime*10f*agingMultiplier); // every second is a 5th of a wizard year
+
             BroadcastMessage("PopularityTick"); // tell listening classes to update properties relative to your spells popularity
 
+            gameObject.SendMessage("UpdateUI");
             popularityIntervalTimer = POPULARITY_INTERVAL;
+
+            CheckGameEnd();
         }
     }
 
     void PopularityTick()
     {
         //Debug.Log("Popularity Ticked!");
+    }
+
+    bool gameOver = false;
+    void CheckGameEnd()
+    {
+        if (playerWizard != null && playerWizard.Age >= 200)
+        {
+            gameOver = true;
+            gameObject.SendMessage("OnGameOver");
+        }
+    }
+
+    // for testing
+    public void AddRandomSpellsToAllRegions()
+    {
+        Wizard wiz;
+        foreach (Region r in regionManager.Regions)
+        {
+            wiz = wizardManager.GenerateWizard("Tester Wiz");
+            r.IntroduceSpell(spellManager.GenerateRandomSpell(wiz));
+        }
     }
 }

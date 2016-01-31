@@ -3,13 +3,20 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
+
 public class NotificationManager : MonoBehaviour
 {
     private static float NOTIFICATION_DURATION = 3f;
 
+    public class NotificationDetails
+    {
+        public string Message = "";
+        public float Duration = 3f;
+    }
+
     public GameObject notificationPanel;
 
-    public List<string> stack = new List<string>();
+    List<NotificationDetails> stack = new List<NotificationDetails>();
 
     private float timer = 0f;
 
@@ -34,14 +41,14 @@ public class NotificationManager : MonoBehaviour
     {
         if (stack.Count > 0)
         {
-            string message = stack[0];
+            NotificationDetails notification = stack[0];
             stack.RemoveAt(0);
 
-            notificationPanel.GetComponentInChildren<Text>().text = message;
+            notificationPanel.GetComponentInChildren<Text>().text = notification.Message;
 
             notificationPanel.SetActive(true);
 
-            timer = NOTIFICATION_DURATION;
+            timer = notification.Duration;
         }
         else
         {
@@ -49,10 +56,16 @@ public class NotificationManager : MonoBehaviour
         }
     }
 
-    public void QueueNotification(string message)
+    public void QueueNotification(string message, float duration=-1f)
     {
-        stack.Add(message);
+        NotificationDetails notificationDeets = new NotificationDetails();
+        notificationDeets.Message = message;
+        notificationDeets.Duration = duration == -1f ? NOTIFICATION_DURATION : duration;
 
-        if (stack.Count == 1) ShowNextMessage();
+        stack.Add(notificationDeets);
+
+        if (!notificationPanel.activeSelf && stack.Count == 1) ShowNextMessage();
     }
 }
+
+

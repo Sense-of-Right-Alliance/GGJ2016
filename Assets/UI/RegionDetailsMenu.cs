@@ -1,11 +1,19 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
 
-public class RegionDetailsMenu : MonoBehaviour {
-
-    string region = "Mountain";
+public class RegionDetailsMenu : MonoBehaviour
+{
     public Text nameText;
+    public RegionSpellsUI regionSpellsUI;
+    public RegionManager regionManager;
+
+    Region currentRegion;
+    public Region CurrentRegion
+    {
+        get { return currentRegion; }
+    }
 
     void Start()
     {
@@ -13,18 +21,26 @@ public class RegionDetailsMenu : MonoBehaviour {
 
         if (!nameText)
             nameText = transform.FindChild("Name").GetComponent<Text>();
+
+        if (!regionSpellsUI)
+            regionSpellsUI = transform.FindChild("Region Spells").GetComponent<RegionSpellsUI>();
+
+        if (!regionManager)
+            regionManager = GameObject.FindObjectOfType<RegionManager>();
     }
 
     public string Region
     {
-        get { return region; }
+        get { return currentRegion.InternalName; }
     }
 
-	public void Init(string region)
+    public void Init(MapNode node)
     {
-        this.region = region;
+        currentRegion = regionManager.GetRegion(node.InternalName);
 
-        nameText.text = region;
+        nameText.text = currentRegion.DisplayedName;
+
+        regionSpellsUI.Init(currentRegion);
 
         gameObject.SetActive(true);
     }
@@ -32,5 +48,12 @@ public class RegionDetailsMenu : MonoBehaviour {
     public void Hide()
     {
         gameObject.SetActive(false);
+    }
+
+    public void UpdateUI()
+    {
+        if (currentRegion == null) return; 
+
+        regionSpellsUI.UpdateSpells();
     }
 }
