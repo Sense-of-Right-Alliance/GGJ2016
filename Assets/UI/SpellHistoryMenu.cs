@@ -11,10 +11,15 @@ public class SpellHistoryMenu : MonoBehaviour
     public GameObject spellList;
     public GameManager gameManager;
 
-    void Start()
+    void Awake()
     {
         if (!gameManager)
             gameManager = GameObject.FindObjectOfType<GameManager>();
+    }
+
+    public void UpdateUI()
+    {
+        // todo: update the ui!
     }
 
     public void UpdateSpellList()
