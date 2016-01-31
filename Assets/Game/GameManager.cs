@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
     public NotificationManager notificationManager;
 
     SpellManager spellManager;
+    WizardManager wizardManager;
 
     public void Awake()
     {
@@ -35,6 +36,7 @@ public class GameManager : MonoBehaviour
             regionDetailsMenu = GameObject.FindObjectOfType<RegionDetailsMenu>();
 
         spellManager = GetComponent<SpellManager>();
+        wizardManager = GetComponent<WizardManager>();
     }
 
     public void MapNodeClicked(string region)
@@ -56,8 +58,10 @@ public class GameManager : MonoBehaviour
     {
         if (wizardNameField && wizardNameField.text != "")
         {
-            currentSpell = spellManager.GenerateRandomSpell(wizardName);
+            var wizard = wizardManager.GenerateWizard(wizardName);
 
+            currentSpell = spellManager.GenerateRandomSpell(wizard);
+            
             allSpells.Add(currentSpell);
 
             notificationManager.QueueNotification("You've researched the " + currentSpell.Name + " spell!");

@@ -16,12 +16,12 @@ public class Region
 
     public Region(string name) : this(name, name) { }
 
-    public float GetOpinion(SpellDescriptor descriptor)
+    public double GetOpinion(SpellDescriptor descriptor)
     {
         return descriptor.GetOpinion(this);
     }
 
-    public float GetOpinion(SpellObject obj)
+    public double GetOpinion(SpellObject obj)
     {
         return obj.GetOpinion(this);
     }

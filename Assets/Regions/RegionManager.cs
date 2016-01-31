@@ -12,13 +12,13 @@ public class RegionManager : MonoBehaviour
     {
         Regions = new List<Region>()
         {
-            new Region("Swamp"),
-            new Region("Coast"),
-            new Region("City"),
-            new Region("Mountain"),
-            new Region("Desert"),
-            new Region("Volcano"),
-            new Region("Haunted"),
+            new Region("Swamp", "Witchbrew"),
+            new Region("Coast", "Barnacleshell Coast"),
+            new Region("City", "Deadspell Crag"),
+            new Region("Mountain", "Far Peaks"),
+            new Region("Desert", "Sandwave Dunes"),
+            new Region("Volcano", "Searing Isles"),
+            new Region("Haunted", "Spookster's Empire"),
         };
     }
 }

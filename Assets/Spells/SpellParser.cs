@@ -23,7 +23,7 @@ public static class SpellParser
         {
             var columns = line.Split('\t');
             string descriptor = columns[0];
-            descriptors.Add(new SpellDescriptor(columns[0], GetOpinions(regions, columns.Skip(1).Select(u => float.Parse(u)))));
+            descriptors.Add(new SpellDescriptor(columns[0], GetOpinions(regions, columns.Skip(1).Select(u => double.Parse(u)))));
         }
 
         return descriptors;
@@ -42,15 +42,15 @@ public static class SpellParser
         {
             var columns = line.Split('\t');
             string descriptor = columns[0];
-            objects.Add(new SpellObject(columns[0], GetOpinions(regions, columns.Skip(1).Select(u => float.Parse(u)))));
+            objects.Add(new SpellObject(columns[0], GetOpinions(regions, columns.Skip(1).Select(u => double.Parse(u)))));
         }
 
         return objects;
     }
 
-    public static Dictionary<string, float> GetOpinions(IEnumerable<string> regions, IEnumerable<float> opinions)
+    public static Dictionary<string, double> GetOpinions(IEnumerable<string> regions, IEnumerable<double> opinions)
     {
-        var opinionDictionary = new Dictionary<string, float>();
+        var opinionDictionary = new Dictionary<string, double>();
 
         int numRegions = regions.Count();
         int numopinions = opinions.Count();
@@ -61,7 +61,7 @@ public static class SpellParser
         for (int i = 0; i < numRegions; i += 1)
         {
             string region = regions.ElementAt(i);
-            float opinion = opinions.ElementAt(i);
+            double opinion = opinions.ElementAt(i);
             opinionDictionary.Add(region, opinion);
         }
         return opinionDictionary;
