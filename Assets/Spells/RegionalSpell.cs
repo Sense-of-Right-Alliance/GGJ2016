@@ -9,10 +9,69 @@ public class RegionalSpell
     public Spell Spell { get; private set; }
     public Region Region { get; private set; }
 
-    public RegionalSpell(Spell spell, Region region)
+    public double Exposure { get; private set; }
+    public double Popularity { get { return Newness * Exposure; } }
+    
+    public double ObjectOpinion { get { return Region.GetOpinion(Spell.Object); } }
+    public double DescriptorOpinion { get { return Region.GetOpinion(Spell.Descriptor); } }
+
+    double objOpinionModifier = 1.0;
+    double descOpinionModifier = 1.0;
+    public double Worth { get { return ObjectOpinion * objOpinionModifier + DescriptorOpinion * descOpinionModifier; } }
+
+    public double WizardReaction { get; private set; }
+
+    double infamyModifier = 1.0;
+    public double Infamy { get; private set; }
+
+    public double Rating
+    {
+        get
+        {
+            return (Worth * WizardReaction) + (Popularity * Region.Adventurousness) + (Infamy * infamyModifier);
+        }
+    }
+
+    int ticks = 0;
+    public double Newness
+    {
+        get
+        {
+            int minute = (int)(60 * (1f / 0.2f)); // 0.2f = GameManager.POPULARITY_INTERVAL
+
+            if (ticks < minute)
+                return 8;
+            else if (ticks < minute * 2)
+                return 7;
+            else if (ticks < minute * 3)
+                return 5.5;
+            else if (ticks < minute * 4)
+                return 4;
+            else if (ticks < minute * 5)
+                return 2;
+            else
+                return 1500 / ticks;
+        }
+    }
+
+    public RegionalSpell(Spell spell, Region region, int ticks, double infamy)
     {
         this.Spell = spell;
         this.Region = region;
+        this.ticks = ticks;
+        this.Infamy = infamy;
+
+        var rand = Utility.GetRandom(Spell.Wizard.Name, Region.InternalName);
+        WizardReaction = rand.NextDouble().Between(0.75, 1.25);
+    }
+
+    public void GameUpdateTick(IEnumerable<Wizard> wizards)
+    {
+        if (wizards.Any(w => w.CurrentSpell == Spell))
+            Exposure += 0.002;
+
+        // TODO: increase local exposure
+        // TODO: increase exposure in neighbouring regions
     }
 
     //static List<NewnessOpinion> newnessDecline = new List<NewnessOpinion>()
@@ -55,12 +114,6 @@ public class RegionalSpell
     //    }
 
     //    return popularity;
-    //}
-
-    //double GetWizardPopularityModifier()
-    //{
-    //    var rand = new System.Random(Spell.Wizard.Name.GetHashCode());
-    //    return rand.NextDouble();
     //}
 
     //class NewnessOpinion
