@@ -96,8 +96,10 @@ public class GameManager : MonoBehaviour
         
         targetRegion.VisitingWizards.Add(playerWizard);
         currentRegion = targetRegion;
-  
+
         //Debug.Log("Clicked to travel to the " + currentRegion.InternalName + " region! updated visiters = " + currentRegion.VisitingWizards.Count);
+
+        gameObject.SendMessage("UpdateUI");
     }
 
     float popularityIntervalTimer = 0f;

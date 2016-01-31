@@ -28,10 +28,13 @@ public class RegionSpellsUI : MonoBehaviour
 
     public void UpdateSpells()
     {
+        RefreshSpellList();
+        /*
         for (int i = 0; i < listItems.Count; i++)
         {
-            listItems[i].GetComponent<RegionSpellListItem>().UpdateSpell();
+            listItems[i].GetComponent<RegionSpellListItem>().UpdateText();
         }
+        */
     }
 
     public void RefreshSpellList()
@@ -45,7 +48,7 @@ public class RegionSpellsUI : MonoBehaviour
         {
             listItem = (GameObject)Instantiate(regionSpellListItem, Vector3.zero, Quaternion.identity);
             listItem.transform.SetParent(spellList.transform, false);
-            listItem.GetComponent<Text>().text = spell.Spell.Name;
+            listItem.GetComponent<RegionSpellListItem>().Init(spell);
 
             listItems.Add(listItem);
         }
