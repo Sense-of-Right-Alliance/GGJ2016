@@ -52,6 +52,12 @@ public class Region
         {
             spell.GameUpdateTick(VisitingWizards);
         }
+
+        var topList = TopSpells;
+        for (int i = 0; i < topList.Count; i++)
+        {
+            topList[i].Infamy += (double)(topList.Count - i) / 1000.0;
+        }
     }
 
     public void AddWizard(Wizard wizard)
