@@ -15,6 +15,12 @@ public class RegionDetailsMenu : MonoBehaviour
         get { return currentRegion; }
     }
 
+    MapNode currentNode;
+    public MapNode CurrentNode
+    {
+        get { return currentNode; }
+    }
+
     void Start()
     {
         gameObject.SetActive(false);
@@ -36,6 +42,7 @@ public class RegionDetailsMenu : MonoBehaviour
 
     public void Init(MapNode node)
     {
+        this.currentNode = node;
         currentRegion = regionManager.GetRegion(node.InternalName);
 
         nameText.text = currentRegion.DisplayedName;
