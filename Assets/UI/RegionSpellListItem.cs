@@ -28,7 +28,9 @@ public class RegionSpellListItem : MonoBehaviour
 
         string changeInPop = popIncreasing ? "▲" : "▼";
 
-        string displayString = System.String.Format("{0:d3} [{1:d3}] {2} {3:f0}% {4}", rank, (int)(currentSpell.Rating * 10), currentSpell.Spell.Name, currentSpell.Exposure * 100, changeInPop);
+        string rankString = rank == -1 ? "---" : System.String.Format("{0:d3}", rank);
+
+        string displayString = System.String.Format("{0} [{1:d3}] {2} {3:f0}% {4}", rankString, (int)(currentSpell.Rating * 10), currentSpell.Spell.Name, currentSpell.Exposure * 100, changeInPop);
 
         GetComponent<Text>().text = displayString;
     }
