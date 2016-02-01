@@ -9,7 +9,7 @@ public class WizardManager : MonoBehaviour
     public Dictionary<int, Wizard> Wizards { get; private set; }
 
     int nextId = 0;
-    float agingMultiplier = 1.0f;
+    public float agingMultiplier = 1.0f;
 
     public WizardManager()
     {

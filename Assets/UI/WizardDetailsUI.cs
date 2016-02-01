@@ -12,15 +12,15 @@ public class WizardDetailsUI : MonoBehaviour
 
     void Start()
     {
-        if (!gameManager)
-            gameManager = GameObject.FindObjectOfType<GameManager>();
-
-        if (!spellHistoryMenu)
-            spellHistoryMenu = GameObject.FindObjectOfType<SpellHistoryMenu>();
     }
 
     public void UpdateUI()
     {
+        if (!gameManager)
+            gameManager = GameObject.FindObjectOfType<GameManager>();
+        if (!spellHistoryMenu)
+            spellHistoryMenu = GetComponentInChildren<SpellHistoryMenu>();
+
         Wizard playerWizard = gameManager.PlayerWizard;
 
         if (playerWizard == null) return;

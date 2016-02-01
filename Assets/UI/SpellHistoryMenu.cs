@@ -19,25 +19,29 @@ public class SpellHistoryMenu : MonoBehaviour
 
     public void UpdateUI()
     {
-        // todo: update the ui!
+        RefreshSpellList();
     }
 
-    public void UpdateSpellList()
+    public void RefreshSpellList()
     {
-        
         ClearSpellListItems();
 
-        List<Spell> spells = gameManager.allSpells;
+        AddSpellListItem(gameManager.PlayerWizard.CurrentSpell);
 
-        GameObject listItem;
+        List<Spell> spells = gameManager.PlayerWizard.PastSpells;
         for (int i = 0; i < spells.Count; i++)
         {
-            listItem = (GameObject)Instantiate(spellListItem, Vector3.zero, Quaternion.identity);
-            listItem.transform.SetParent(spellList.transform, false);
-            listItem.GetComponent<Text>().text = spells[i].Name;
+            AddSpellListItem(spells[i]);
         }
+    }
 
-        //LayoutRebuilder.MarkLayoutForRebuild((RectTransform)spellList.transform);
+    void AddSpellListItem(Spell spell)
+    {
+        GameObject listItem;
+        
+        listItem = (GameObject)Instantiate(spellListItem, Vector3.zero, Quaternion.identity);
+        listItem.transform.SetParent(spellList.transform, false);
+        listItem.GetComponent<SpellHistoryListItem>().Init(spell);
     }
 
     public void ClearSpellListItems()

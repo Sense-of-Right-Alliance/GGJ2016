@@ -58,6 +58,7 @@ public class Wizard
     {
         this.Id = id;
         this.Name = name;
+        this.Alive = true;
     }
 
     public void IncreaseAge(float time)
