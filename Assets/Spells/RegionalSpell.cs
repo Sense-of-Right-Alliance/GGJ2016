@@ -9,8 +9,10 @@ public class RegionalSpell
     public Spell Spell { get; private set; }
     public Region Region { get; private set; }
 
+    double popularityModifier = 0.1;
     public double Exposure { get; private set; }
     public double Popularity { get { return Newness * Exposure; } }
+
     double previousPopularity = 0;
     public bool PopularityIncreasing { get; private set; }
     
@@ -30,7 +32,7 @@ public class RegionalSpell
     {
         get
         {
-            return (Worth * WizardReaction) + (Popularity * Region.Adventurousness) + (Infamy * infamyModifier);
+            return (Worth * WizardReaction) + (Popularity * popularityModifier * Region.Adventurousness) + (Infamy * infamyModifier);
         }
     }
 
@@ -39,22 +41,12 @@ public class RegionalSpell
     {
         get
         {
-            int minute = (int)(60 * (1f / 0.2f)); // 0.2f = GameManager.POPULARITY_INTERVAL
-
-            if (ticks < minute)
-                return 8;
-            else if (ticks < minute * 2)
-                return 7;
-            else if (ticks < minute * 3)
-                return 5.5;
-            else if (ticks < minute * 4)
-                return 4;
-            else if (ticks < minute * 5)
-                return 2;
-            else
-                return 1500 / ticks;
+            if (ticks < 300) return 90;
+            return 240.0 / (double)ticks;
         }
     }
+
+    System.Random random;
 
     public RegionalSpell(Spell spell, Region region, int ticks, double infamy)
     {
@@ -65,10 +57,10 @@ public class RegionalSpell
         this.ticks = ticks;
         this.Infamy = infamy;
 
-        var rand = Utility.GetRandom(Spell.Wizard.Name, Region.InternalName);
-        WizardReaction = rand.NextDouble().Between(0.75, 1.25);
+        random = Utility.GetRandom(Spell.Wizard.Name, Region.InternalName);
+        WizardReaction = random.NextDouble().Between(0.75, 1.25);
 
-        double exposureAmount = (double)ticks * rand.NextDouble() / 600.0;
+        double exposureAmount = (double)ticks * random.NextDouble() / 600.0;
         Exposure = exposureAmount > 1.0 ? 1.0 : (exposureAmount < 0.0 ? 0.01 : exposureAmount);
 
         PopularityIncreasing = true;
@@ -76,6 +68,8 @@ public class RegionalSpell
 
     public void GameUpdateTick(IEnumerable<Wizard> wizards)
     {
+        ticks += 1;
+
         // increase exposure if wizard is marketing
         if (Exposure < 1.0 && wizards.Any(w => w.CurrentSpell == Spell))
         {
@@ -89,28 +83,52 @@ public class RegionalSpell
             }
         }
 
-        // increase local exposure
+        // increase exposure
         if (Exposure < 1.0 && Exposure > 0.0)
         {
-            var rand = Utility.GetRandom(Spell.Name, Exposure.ToString());
-            double amount = rand.NextDouble();
+            double amount = random.NextDouble();
 
-            if (amount/10.0 < Exposure)
+            if (amount < Exposure)
             {
-                if (Exposure + 0.001 > 1.0)
+                if (Exposure + 0.01 > 1.0)
                 {
                     Exposure = 1.0;
                 }
                 else
                 {
-                    Exposure += 0.001;
+                    Exposure += 0.01;
+                }
+
+                // increase exposure in neighbouring regions
+                foreach (var neighbour in Region.Neighbours)
+                {
+                    if (!neighbour.AllSpells.ContainsKey(Spell.Id))
+                    {
+                        neighbour.IntroduceSpell(Spell);
+                    }
+
+                    if (neighbour.AllSpells[Spell.Id].Exposure + 0.005 > 1.0)
+                    {
+                        neighbour.AllSpells[Spell.Id].Exposure = 1.0;
+                    }
+                    else
+                    {
+                        neighbour.AllSpells[Spell.Id].Exposure += 0.005;
+                    }
                 }
             }
         }
-        // TODO: increase exposure in neighbouring regions
 
-        PopularityIncreasing = previousPopularity < Popularity;
-        previousPopularity = Popularity;
+        double popDifference = Popularity - previousPopularity;
+        if (Math.Abs(popDifference) > 0.1)
+        {
+            PopularityIncreasing = previousPopularity < Popularity;
+            previousPopularity = Popularity;
+        }
+        else if (Exposure >= 1.0)
+        {
+            PopularityIncreasing = false;
+        }
     }
 
     //static List<NewnessOpinion> newnessDecline = new List<NewnessOpinion>()

@@ -12,6 +12,7 @@ public class Region
 
     public Dictionary<int, RegionalSpell> AllSpells { get; private set; }
     public List<RegionalSpell> TopSpells { get { return AllSpells.Values.OrderByDescending(u => u.Rating).Take(100).ToList(); } }
+    public List<Region> Neighbours { get; private set; }
 
     public Region(string internalName, string displayedName, double adventurousness)
     {
@@ -21,6 +22,12 @@ public class Region
 
         AllSpells = new Dictionary<int, RegionalSpell>();
         VisitingWizards = new List<Wizard>();
+        Neighbours = new List<Region>();
+    }
+
+    public void AddNeighbours(IEnumerable<Region> neighbours)
+    {
+        Neighbours.AddRange(neighbours);
     }
 
     public double GetOpinion(SpellDescriptor descriptor)
