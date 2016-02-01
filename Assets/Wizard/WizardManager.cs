@@ -11,9 +11,13 @@ public class WizardManager : MonoBehaviour
     int nextId = 0;
     public float agingMultiplier = 1.0f;
 
+    System.Random random;
+
     public WizardManager()
     {
         Wizards = new Dictionary<int, Wizard>();
+
+        random = new System.Random();
     }
 
     public Wizard GenerateWizard(string name)
@@ -25,8 +29,7 @@ public class WizardManager : MonoBehaviour
 
     public List<Wizard> GenerateRandomWizards(int count)
     {
-        var rand = new System.Random(nextId);
-        var wizNames = wizardNames.OrderBy(n => rand.Next()).Take(count);
+        var wizNames = wizardNames.OrderBy(n => random.Next()).Take(count);
 
         List<Wizard> newWizards = new List<Wizard>();
 
@@ -42,8 +45,7 @@ public class WizardManager : MonoBehaviour
 
     public Wizard GenerateRandomWizard()
     {
-        var rand = new System.Random(nextId);
-        var wiz = new Wizard(nextId++, wizardNames.ElementAt(rand.Next(wizardNames.Count())));
+        var wiz = new Wizard(nextId++, wizardNames.ElementAt(random.Next(wizardNames.Count())));
         Wizards.Add(wiz.Id, wiz);
         return wiz;
     }
