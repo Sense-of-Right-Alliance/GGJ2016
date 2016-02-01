@@ -67,20 +67,23 @@ public class GameManager : MonoBehaviour
     {
         if (wizardNameField && wizardNameField.text != "")
         {
-            playerWizard = wizardManager.GenerateWizard(wizardName);
+            if (fromFirstScreen) playerWizard = wizardManager.GenerateWizard(wizardName);
 
             playerWizard.CurrentSpell = spellManager.GenerateRandomSpell(playerWizard);
             
             allSpells.Add(playerWizard.CurrentSpell);
 
             notificationManager.QueueNotification("You've researched the " + playerWizard.CurrentSpell.Name + " spell!");
-            notificationManager.QueueNotification("Promote your spell! You can change which region you're promoting in by clicking the region icon.", 8f);
 
             spellHistoryMenu.UpdateUI();
-
-            regionManager.AddRandomSpellsToAllRegions();
-
-            if (fromFirstScreen) menuManager.HideScreen();
+            
+            if (fromFirstScreen)
+            {
+                
+                regionManager.AddRandomSpellsToAllRegions();
+                menuManager.HideScreen();
+                notificationManager.QueueNotification("Promote your spell! You can change which region you're promoting in by clicking the region icon.", 8f);
+            }
         }
     }
 

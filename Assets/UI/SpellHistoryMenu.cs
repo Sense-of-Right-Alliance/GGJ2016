@@ -29,6 +29,7 @@ public class SpellHistoryMenu : MonoBehaviour
         AddSpellListItem(gameManager.PlayerWizard.CurrentSpell);
 
         List<Spell> spells = gameManager.PlayerWizard.PastSpells;
+        Debug.Log("past spells = " + spells.Count);
         for (int i = 0; i < spells.Count; i++)
         {
             AddSpellListItem(spells[i]);
@@ -42,6 +43,15 @@ public class SpellHistoryMenu : MonoBehaviour
         listItem = (GameObject)Instantiate(spellListItem, Vector3.zero, Quaternion.identity);
         listItem.transform.SetParent(spellList.transform, false);
         listItem.GetComponent<SpellHistoryListItem>().Init(spell);
+
+        if (spell.Id == gameManager.PlayerWizard.CurrentSpell.Id)
+        {
+            listItem.GetComponent<Text>().color = Color.green;
+        }
+        else if (spell.Id == gameManager.PlayerWizard.CurrentSpell.Id)
+        {
+            listItem.GetComponent<Text>().color = Color.yellow;
+        }
     }
 
     public void ClearSpellListItems()
