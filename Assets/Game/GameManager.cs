@@ -75,8 +75,8 @@ public class GameManager : MonoBehaviour
 
             notificationManager.QueueNotification("You've researched the " + playerWizard.CurrentSpell.Name + " spell!");
 
-            spellHistoryMenu.UpdateUI();
-            
+            if (wizardIcon.inRegion) currentRegion.IntroduceSpell(playerWizard.CurrentSpell);
+
             if (fromFirstScreen)
             {
                 
@@ -84,6 +84,8 @@ public class GameManager : MonoBehaviour
                 menuManager.HideScreen();
                 notificationManager.QueueNotification("Promote your spell! You can change which region you're promoting in by clicking the region icon.", 8f);
             }
+
+            gameObject.SendMessage("UpdateUI");
         }
     }
 
