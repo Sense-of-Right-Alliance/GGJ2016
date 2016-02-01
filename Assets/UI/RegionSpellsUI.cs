@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System.Linq;
 using System.Collections.Generic;
 
 public class RegionSpellsUI : MonoBehaviour
@@ -54,11 +55,13 @@ public class RegionSpellsUI : MonoBehaviour
 
             if (gameManager.PlayerWizard == null) continue;
 
+            // Color the text
             if (topSpells[i].Spell.Id == gameManager.PlayerWizard.CurrentSpell.Id)
             {
                 listItem.GetComponent<Text>().color = Color.green;
+
             }
-            else if (topSpells[i].Spell.Id == gameManager.PlayerWizard.CurrentSpell.Id)
+            else if (gameManager.PlayerWizard.PastSpells.Any(s => s.Id == topSpells[i].Spell.Id))
             {
                 listItem.GetComponent<Text>().color = Color.yellow;
             }
@@ -66,6 +69,8 @@ public class RegionSpellsUI : MonoBehaviour
             {
                 listItem.GetComponent<Text>().color = Color.white;
             }
+
+            
         }
     }
 

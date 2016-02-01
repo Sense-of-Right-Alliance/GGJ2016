@@ -29,7 +29,6 @@ public class SpellHistoryMenu : MonoBehaviour
         AddSpellListItem(gameManager.PlayerWizard.CurrentSpell);
 
         List<Spell> spells = gameManager.PlayerWizard.PastSpells;
-        Debug.Log("past spells = " + spells.Count);
         for (int i = 0; i < spells.Count; i++)
         {
             AddSpellListItem(spells[i]);
