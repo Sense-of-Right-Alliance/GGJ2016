@@ -41,14 +41,14 @@ public class RegionSpellsUI : MonoBehaviour
     {
         ClearSpellListItems();
 
-        IEnumerable<RegionalSpell> topSpells = currentRegion.TopSpells;
+        List<RegionalSpell> topSpells = currentRegion.TopSpells;
 
         GameObject listItem;
-        foreach(RegionalSpell spell in topSpells)
+        for (int i = 0; i < topSpells.Count; i++)
         {
             listItem = (GameObject)Instantiate(regionSpellListItem, Vector3.zero, Quaternion.identity);
             listItem.transform.SetParent(spellList.transform, false);
-            listItem.GetComponent<RegionSpellListItem>().Init(spell);
+            listItem.GetComponent<RegionSpellListItem>().Init(i+1, topSpells[i]);
 
             listItems.Add(listItem);
         }

@@ -76,7 +76,7 @@ public class GameManager : MonoBehaviour
             notificationManager.QueueNotification("You've researched the " + playerWizard.CurrentSpell.Name + " spell!");
             notificationManager.QueueNotification("Promote your spell! You can change which region you're promoting in by clicking the region icon.", 8f);
 
-            spellHistoryMenu.UpdateSpellList();
+            spellHistoryMenu.UpdateUI();
 
             //AddRandomSpellsToAllRegions(); // for testing
 

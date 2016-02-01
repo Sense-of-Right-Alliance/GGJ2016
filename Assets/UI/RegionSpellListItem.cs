@@ -5,15 +5,16 @@ using System.Collections;
 public class RegionSpellListItem : MonoBehaviour
 {
     RegionalSpell currentSpell;
-    Text textObj;
+    int rank = -1;
 
-    double previousPopularity;
-
-    public void Init(RegionalSpell spell)
+    void Start()
     {
-        this.currentSpell = spell;
+    }
 
-        previousPopularity = spell.Popularity;
+    public void Init(int rank, RegionalSpell spell)
+    {
+        this.rank = rank;
+        this.currentSpell = spell;
 
         UpdateText();
     }
@@ -21,14 +22,14 @@ public class RegionSpellListItem : MonoBehaviour
     // text: <rank> <name> <infamy> <newness> <change in pop> eg. 104 Player's Sub-par Spell 0 2% [dec]
     public void UpdateText()
     {
-        if (currentSpell == null || textObj == null) return;
+        if (currentSpell == null) return;
 
-        string changeInPop = "steady";
-        if (currentSpell.Popularity > previousPopularity)
-            changeInPop = "inc";
-        else if (currentSpell.Popularity < previousPopularity)
-            changeInPop = "dec";
+        bool popIncreasing = true; // currentSpell.PopularityIncreasing;
 
-        textObj.text = System.String.Format("{0} {1} {2} {3} {4}% [{5}]", "order", currentSpell.Spell.Name, currentSpell.Infamy, currentSpell.Newness, changeInPop);
+        string changeInPop = popIncreasing ? "inc" : "dec";
+
+        string displayString = System.String.Format("{0} {1} {2} {3}% [{4}]", rank, currentSpell.Spell.Name, currentSpell.Infamy, currentSpell.Newness, changeInPop);
+
+        GetComponent<Text>().text = displayString;
     }
 }
