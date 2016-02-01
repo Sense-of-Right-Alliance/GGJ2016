@@ -11,7 +11,7 @@ public class Region
     public List<Wizard> VisitingWizards { get; private set; }
 
     public Dictionary<int, RegionalSpell> AllSpells { get; private set; }
-    public IEnumerable<RegionalSpell> TopSpells { get { return AllSpells.Values.OrderByDescending(u => u.Rating).Take(100); } }
+    public List<RegionalSpell> TopSpells { get { return AllSpells.Values.OrderByDescending(u => u.Rating).Take(100).ToList(); } }
 
     public Region(string internalName, string displayedName, double adventurousness)
     {

@@ -11,6 +11,8 @@ public class RegionalSpell
 
     public double Exposure { get; private set; }
     public double Popularity { get { return Newness * Exposure; } }
+    double previousPopularity = 0;
+    public bool PopularityIncreasing { get; private set; }
     
     public double ObjectOpinion { get { return Region.GetOpinion(Spell.Object); } }
     public double DescriptorOpinion { get { return Region.GetOpinion(Spell.Descriptor); } }
@@ -65,6 +67,8 @@ public class RegionalSpell
 
         var rand = Utility.GetRandom(Spell.Wizard.Name, Region.InternalName);
         WizardReaction = rand.NextDouble().Between(0.75, 1.25);
+
+        PopularityIncreasing = true;
     }
 
     public void GameUpdateTick(IEnumerable<Wizard> wizards)
@@ -83,6 +87,9 @@ public class RegionalSpell
 
         // TODO: increase local exposure
         // TODO: increase exposure in neighbouring regions
+
+        PopularityIncreasing = previousPopularity < Popularity;
+        previousPopularity = Popularity;
     }
 
     //static List<NewnessOpinion> newnessDecline = new List<NewnessOpinion>()

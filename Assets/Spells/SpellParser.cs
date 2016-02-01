@@ -22,7 +22,6 @@ public static class SpellParser
         while ((line = reader.ReadLine()) != null)
         {
             var columns = line.Split('\t');
-            string descriptor = columns[0];
             descriptors.Add(new SpellDescriptor(columns[0], GetOpinions(regions, columns.Skip(1).Select(u => double.Parse(u)))));
         }
 
@@ -41,7 +40,6 @@ public static class SpellParser
         while ((line = reader.ReadLine()) != null)
         {
             var columns = line.Split('\t');
-            string descriptor = columns[0];
             objects.Add(new SpellObject(columns[0], GetOpinions(regions, columns.Skip(1).Select(u => double.Parse(u)))));
         }
 
