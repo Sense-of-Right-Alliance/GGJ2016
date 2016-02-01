@@ -29,6 +29,8 @@ public class GameManager : MonoBehaviour
     WizardManager wizardManager;
     RegionManager regionManager;
 
+    WizardIcon wizardIcon;
+
     public void Awake()
     {
         if (!menuManager)
@@ -43,8 +45,8 @@ public class GameManager : MonoBehaviour
         if (!regionDetailsMenu)
             regionDetailsMenu = GameObject.FindObjectOfType<RegionDetailsMenu>();
 
-       // if (!wizardDetailsUI)
-       //     wizardDetailsUI = GameObject.FindObjectOfType<WizardDetailsUI>();
+        if (!wizardIcon)
+            wizardIcon = GameObject.FindObjectOfType<WizardIcon>();
 
         spellManager = GetComponent<SpellManager>();
         wizardManager = GetComponent<WizardManager>();
@@ -65,20 +67,23 @@ public class GameManager : MonoBehaviour
     {
         if (wizardNameField && wizardNameField.text != "")
         {
-            playerWizard = wizardManager.GenerateWizard(wizardName);
+            if (fromFirstScreen) playerWizard = wizardManager.GenerateWizard(wizardName);
 
             playerWizard.CurrentSpell = spellManager.GenerateRandomSpell(playerWizard);
             
             allSpells.Add(playerWizard.CurrentSpell);
 
             notificationManager.QueueNotification("You've researched the " + playerWizard.CurrentSpell.Name + " spell!");
-            notificationManager.QueueNotification("Promote your spell! You can change which region you're promoting in by clicking the region icon.", 8f);
 
             spellHistoryMenu.UpdateUI();
-
-            regionManager.AddRandomSpellsToAllRegions();
-
-            if (fromFirstScreen) menuManager.HideScreen();
+            
+            if (fromFirstScreen)
+            {
+                
+                regionManager.AddRandomSpellsToAllRegions();
+                menuManager.HideScreen();
+                notificationManager.QueueNotification("Promote your spell! You can change which region you're promoting in by clicking the region icon.", 8f);
+            }
         }
     }
 
@@ -92,10 +97,12 @@ public class GameManager : MonoBehaviour
             //Debug.Log("Removed from " + currentRegion.InternalName + " updated visiters = " + currentRegion.VisitingWizards.Count);
         }
 
-        targetRegion.AddWizard(playerWizard);
+        //targetRegion.AddWizard(playerWizard);
         currentRegion = targetRegion;
 
         //Debug.Log("Clicked to travel to the " + currentRegion.InternalName + " region! updated visiters = " + currentRegion.VisitingWizards.Count);
+
+        wizardIcon.MoveToRegion(targetRegionMenu.CurrentNode, targetRegion.AddWizard);
 
         gameObject.SendMessage("UpdateUI");
     }
