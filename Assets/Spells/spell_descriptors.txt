@@ -14,7 +14,7 @@ Scorching	3	2	3	0	0	4	1
 Incinerating	3	2	3	0	0	4	1
 Annihilating	3	2	3	0	0	4	1
 White-hot	3	2	3	0	0	4	1
-Slimey	4	1	0	4	1	0	0
+Slimy	4	1	0	4	1	0	0
 Gross	4	1	0	4	1	0	0
 Syrupy	4	1	0	4	1	0	0
 Gooey	4	1	0	4	1	0	0
