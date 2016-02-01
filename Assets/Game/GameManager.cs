@@ -29,6 +29,8 @@ public class GameManager : MonoBehaviour
     WizardManager wizardManager;
     RegionManager regionManager;
 
+    WizardIcon wizardIcon;
+
     public void Awake()
     {
         if (!menuManager)
@@ -43,8 +45,8 @@ public class GameManager : MonoBehaviour
         if (!regionDetailsMenu)
             regionDetailsMenu = GameObject.FindObjectOfType<RegionDetailsMenu>();
 
-       // if (!wizardDetailsUI)
-       //     wizardDetailsUI = GameObject.FindObjectOfType<WizardDetailsUI>();
+        if (!wizardIcon)
+            wizardIcon = GameObject.FindObjectOfType<WizardIcon>();
 
         spellManager = GetComponent<SpellManager>();
         wizardManager = GetComponent<WizardManager>();
@@ -96,6 +98,8 @@ public class GameManager : MonoBehaviour
         currentRegion = targetRegion;
 
         //Debug.Log("Clicked to travel to the " + currentRegion.InternalName + " region! updated visiters = " + currentRegion.VisitingWizards.Count);
+
+        wizardIcon.MoveToRegion(targetRegionMenu.CurrentNode);
 
         gameObject.SendMessage("UpdateUI");
     }
