@@ -11,6 +11,8 @@ public class RegionManager : MonoBehaviour
     SpellManager spellManager;
     WizardManager wizardManager;
 
+    System.Random random;
+
     public RegionManager()
     {
         Regions = new List<Region>()
@@ -23,6 +25,44 @@ public class RegionManager : MonoBehaviour
             new Region("Volcano", "Searing Isles", 1.1),
             new Region("Haunted", "Spookster's Empire", 1.0),
         };
+
+        GetRegion("Swamp").AddNeighbours(new List<Region>()
+        {
+            GetRegion("Coast"),
+            GetRegion("Desert"),
+        });
+
+        GetRegion("Desert").AddNeighbours(new List<Region>()
+        {
+            GetRegion("Coast"),
+            GetRegion("Swamp"),
+            GetRegion("City"),
+        });
+
+        GetRegion("Coast").AddNeighbours(new List<Region>()
+        {
+            GetRegion("Swamp"),
+            GetRegion("Desert"),
+            GetRegion("City"),
+        });
+
+        GetRegion("City").AddNeighbours(new List<Region>()
+        {
+            GetRegion("Coast"),
+            GetRegion("Desert"),
+        });
+
+        GetRegion("Haunted").AddNeighbours(new List<Region>()
+        {
+            GetRegion("Mountain"),
+        });
+
+        GetRegion("Mountain").AddNeighbours(new List<Region>()
+        {
+            GetRegion("Haunted"),
+        });
+
+        random = new System.Random();
     }
 
     public void Awake()
@@ -38,14 +78,12 @@ public class RegionManager : MonoBehaviour
 
     public void AddRandomSpellsToAllRegions()
     {
-        var rand = new System.Random();
-
         var wizards = wizardManager.GenerateRandomWizards(80);
         var spells = new List<Spell>();
 
         foreach (var wizard in wizards)
         {
-            for (int i = 0; i < rand.Next(3,12); i++)
+            for (int i = 0; i < random.Next(3,12); i++)
             {
                 GenerateSpellsForWizard(wizard, spells);
             }
@@ -53,11 +91,11 @@ public class RegionManager : MonoBehaviour
 
         foreach (var region in Regions)
         {
-            var regionSpells = spells.OrderBy(s => rand.Next()).Take(100);
+            var regionSpells = spells.OrderBy(s => random.Next()).Take(100);
             foreach (var spell in regionSpells)
             {
-                int ticks = rand.Next(0, 3000);
-                double infamy = (double)ticks * rand.NextDouble() / 2000;
+                int ticks = random.Next(0, 3000);
+                double infamy = (double)ticks * random.NextDouble() / 2000;
                 region.IntroduceSpell(spell, ticks, infamy);
             }
         }

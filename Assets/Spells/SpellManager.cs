@@ -11,17 +11,20 @@ public class SpellManager : MonoBehaviour
 
     int nextId = 0;
 
+    System.Random random;
+
     public SpellManager()
     {
         SpellDescriptors = SpellParser.FetchDescriptors();
         SpellObjects = SpellParser.FetchObjects();
+
+        random = new System.Random();
     }
 
     public Spell GenerateRandomSpell(Wizard wizard)
     {
-        var rand = Utility.GetRandom(nextId.ToString(), wizard.Name);
-        var descriptor = SpellDescriptors.ElementAt(rand.Next(SpellDescriptors.Count()));
-        var obj = SpellObjects.ElementAt(rand.Next(SpellObjects.Count()));
+        var descriptor = SpellDescriptors.ElementAt(random.Next(SpellDescriptors.Count()));
+        var obj = SpellObjects.ElementAt(random.Next(SpellObjects.Count()));
 
         return new Spell(nextId++, wizard, descriptor, obj);
     }
