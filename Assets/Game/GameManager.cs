@@ -78,7 +78,7 @@ public class GameManager : MonoBehaviour
 
             spellHistoryMenu.UpdateUI();
 
-            //AddRandomSpellsToAllRegions(); // for testing
+            regionManager.AddRandomSpellsToAllRegions();
 
             if (fromFirstScreen) menuManager.HideScreen();
         }
@@ -110,8 +110,6 @@ public class GameManager : MonoBehaviour
         popularityIntervalTimer -= Time.deltaTime;
         if (popularityIntervalTimer <= 0f)
         {
-            if (playerWizard != null) playerWizard.AgeWizard(Time.deltaTime*10f*agingMultiplier); // every second is a 5th of a wizard year
-
             BroadcastMessage("PopularityTick"); // tell listening classes to update properties relative to your spells popularity
 
             gameObject.SendMessage("UpdateUI");
@@ -129,21 +127,10 @@ public class GameManager : MonoBehaviour
     bool gameOver = false;
     void CheckGameEnd()
     {
-        if (playerWizard != null && playerWizard.Age >= 200)
+        if (playerWizard != null && !playerWizard.Alive)
         {
             gameOver = true;
             gameObject.SendMessage("OnGameOver");
-        }
-    }
-
-    // for testing
-    public void AddRandomSpellsToAllRegions()
-    {
-        Wizard wiz;
-        foreach (Region r in regionManager.Regions)
-        {
-            wiz = wizardManager.GenerateWizard("Tester Wiz");
-            r.IntroduceSpell(spellManager.GenerateRandomSpell(wiz));
         }
     }
 }
