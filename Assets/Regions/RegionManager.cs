@@ -50,16 +50,24 @@ public class RegionManager : MonoBehaviour
         {
             GetRegion("Coast"),
             GetRegion("Desert"),
+            GetRegion("Volcano"),
         });
 
-        GetRegion("Haunted").AddNeighbours(new List<Region>()
+        GetRegion("Volcano").AddNeighbours(new List<Region>()
         {
             GetRegion("Mountain"),
+            GetRegion("City"),
         });
 
         GetRegion("Mountain").AddNeighbours(new List<Region>()
         {
             GetRegion("Haunted"),
+            GetRegion("Volcano"),
+        });
+
+        GetRegion("Haunted").AddNeighbours(new List<Region>()
+        {
+            GetRegion("Mountain"),
         });
 
         random = new System.Random();
