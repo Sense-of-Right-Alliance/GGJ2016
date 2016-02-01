@@ -94,12 +94,12 @@ public class GameManager : MonoBehaviour
             //Debug.Log("Removed from " + currentRegion.InternalName + " updated visiters = " + currentRegion.VisitingWizards.Count);
         }
 
-        targetRegion.AddWizard(playerWizard);
+        //targetRegion.AddWizard(playerWizard);
         currentRegion = targetRegion;
 
         //Debug.Log("Clicked to travel to the " + currentRegion.InternalName + " region! updated visiters = " + currentRegion.VisitingWizards.Count);
 
-        wizardIcon.MoveToRegion(targetRegionMenu.CurrentNode);
+        wizardIcon.MoveToRegion(targetRegionMenu.CurrentNode, targetRegion.AddWizard);
 
         gameObject.SendMessage("UpdateUI");
     }
