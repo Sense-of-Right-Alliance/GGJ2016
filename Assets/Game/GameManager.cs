@@ -18,8 +18,6 @@ public class GameManager : MonoBehaviour
     public RegionDetailsMenu regionDetailsMenu;
     public NotificationManager notificationManager;
 
-    public float agingMultiplier = 1f;
-
     Wizard playerWizard;
     public Wizard PlayerWizard
     {
