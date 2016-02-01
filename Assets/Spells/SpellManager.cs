@@ -19,7 +19,7 @@ public class SpellManager : MonoBehaviour
 
     public Spell GenerateRandomSpell(Wizard wizard)
     {
-        var rand = new System.Random(nextId);
+        var rand = Utility.GetRandom(nextId.ToString(), wizard.Name);
         var descriptor = SpellDescriptors.ElementAt(rand.Next(SpellDescriptors.Count()));
         var obj = SpellObjects.ElementAt(rand.Next(SpellObjects.Count()));
 

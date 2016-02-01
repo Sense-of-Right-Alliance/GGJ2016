@@ -24,11 +24,11 @@ public class RegionSpellListItem : MonoBehaviour
     {
         if (currentSpell == null) return;
 
-        bool popIncreasing = true; // currentSpell.PopularityIncreasing;
+        bool popIncreasing = currentSpell.PopularityIncreasing;
 
-        string changeInPop = popIncreasing ? "inc" : "dec";
+        string changeInPop = popIncreasing ? "▲" : "▼";
 
-        string displayString = System.String.Format("{0} {1} {2} {3}% [{4}]", rank, currentSpell.Spell.Name, currentSpell.Infamy, currentSpell.Newness, changeInPop);
+        string displayString = System.String.Format("{0:d3} [{1:d3}] {2} {3:f0}% {4}", rank, (int)(currentSpell.Rating * 10), currentSpell.Spell.Name, currentSpell.Exposure * 100, changeInPop);
 
         GetComponent<Text>().text = displayString;
     }
