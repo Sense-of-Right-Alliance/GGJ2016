@@ -26,7 +26,7 @@ public class WizardDetailsUI : MonoBehaviour
         if (playerWizard == null) return;
 
         ageText.text = "Age: " + playerWizard.Age + " years wiser";
-        notorietyText.text = "Notoriety: " + playerWizard.Notoriety + "";
+        notorietyText.text = "Notoriety: " + (int)playerWizard.Notoriety + "";
 
         spellHistoryMenu.UpdateUI();
     }
