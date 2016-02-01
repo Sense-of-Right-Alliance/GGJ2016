@@ -42,7 +42,7 @@ public class RegionalSpell
         get
         {
             if (ticks < 300) return 90;
-            return 240.0 / (double)ticks;
+            return 24000.0 / (double)ticks;
         }
     }
 
