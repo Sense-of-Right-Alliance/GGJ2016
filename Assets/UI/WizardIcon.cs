@@ -12,6 +12,8 @@ public class WizardIcon : MonoBehaviour
     public float rotationRate = 12f;
     public float travelSpeed = 0.5f;
 
+    public bool inRegion = false;
+
     GameManager gameManager;
     // Use this for initialization
     void Start ()
@@ -66,6 +68,7 @@ public class WizardIcon : MonoBehaviour
         {
             progress = 1f;
             moving = false;
+            inRegion = true;
 
             if (moveCallback != null)
                 moveCallback(gameManager.PlayerWizard);
