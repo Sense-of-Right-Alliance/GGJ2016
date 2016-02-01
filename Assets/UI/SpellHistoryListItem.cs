@@ -27,7 +27,7 @@ public class SpellHistoryListItem : MonoBehaviour
 
         string changeInPop = popIncreasing ? "inc" : "dec";
 
-        string displayString = System.String.Format("{0} {1}", currentSpell.Name, currentSpell.TotalInfamy);
+        string displayString = System.String.Format("{0} {1}", currentSpell.Name, (int)currentSpell.TotalInfamy);
 
         GetComponent<Text>().text = displayString;
     }
