@@ -25,8 +25,8 @@ public class RegionalSpell
 
     public double WizardReaction { get; private set; }
 
-    double infamyModifier = 1.0;
-    public double Infamy { get; private set; }
+    double infamyModifier = 0.001;
+    public double Infamy { get; set; }
 
     public double Rating
     {
@@ -41,8 +41,8 @@ public class RegionalSpell
     {
         get
         {
-            if (ticks < 300) return 90;
-            return 24000.0 / (double)ticks;
+            if (ticks < 100) return 90;
+            return 8000.0 / (double)ticks;
         }
     }
 
