@@ -56,7 +56,7 @@ public class RegionManager : MonoBehaviour
             var regionSpells = spells.OrderBy(s => rand.Next()).Take(100);
             foreach (var spell in regionSpells)
             {
-                int ticks = rand.Next(300, 18000);
+                int ticks = rand.Next(0, 3000);
                 double infamy = (double)ticks * rand.NextDouble() / 2000;
                 region.IntroduceSpell(spell, ticks, infamy);
             }

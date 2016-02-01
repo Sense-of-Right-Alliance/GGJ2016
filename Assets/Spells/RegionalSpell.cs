@@ -68,11 +68,15 @@ public class RegionalSpell
         var rand = Utility.GetRandom(Spell.Wizard.Name, Region.InternalName);
         WizardReaction = rand.NextDouble().Between(0.75, 1.25);
 
+        double exposureAmount = (double)ticks * rand.NextDouble() / 600.0;
+        Exposure = exposureAmount > 1.0 ? 1.0 : (exposureAmount < 0.0 ? 0.01 : exposureAmount);
+
         PopularityIncreasing = true;
     }
 
     public void GameUpdateTick(IEnumerable<Wizard> wizards)
     {
+        // increase exposure if wizard is marketing
         if (Exposure < 1.0 && wizards.Any(w => w.CurrentSpell == Spell))
         {
             if (Exposure + 0.002 > 1.0)
@@ -85,7 +89,24 @@ public class RegionalSpell
             }
         }
 
-        // TODO: increase local exposure
+        // increase local exposure
+        if (Exposure < 1.0 && Exposure > 0.0)
+        {
+            var rand = Utility.GetRandom(Spell.Name, Exposure.ToString());
+            double amount = rand.NextDouble();
+
+            if (amount/10.0 < Exposure)
+            {
+                if (Exposure + 0.001 > 1.0)
+                {
+                    Exposure = 1.0;
+                }
+                else
+                {
+                    Exposure += 0.001;
+                }
+            }
+        }
         // TODO: increase exposure in neighbouring regions
 
         PopularityIncreasing = previousPopularity < Popularity;
