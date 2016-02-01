@@ -18,11 +18,15 @@ public class Wizard
                 return Name + "'s";
         }
     }
+
+    const float MINIMUM_AGE = 100;
     float age = 50;
     public int Age
     {
         get { return (int)Math.Floor(age); }
     }
+
+    public bool Alive { get; private set; }
     
     public int Notoriety
     {
@@ -56,9 +60,17 @@ public class Wizard
         this.Name = name;
     }
 
-    public void AgeWizard(float time)
+    public void IncreaseAge(float time)
     {
-        age += time;
-        //Debug.Log("aging wizard ; age=" + age + " time= " + time);
+        if (Alive)
+        {
+            age += time;
+            if (age > MINIMUM_AGE)
+            {
+                float deathChance = (age - MINIMUM_AGE) / 1000f;
+                if (Utility.Random(Name) < deathChance)
+                    Alive = false;
+            }
+        }
     }
 }

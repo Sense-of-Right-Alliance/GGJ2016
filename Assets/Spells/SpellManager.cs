@@ -9,9 +9,6 @@ public class SpellManager : MonoBehaviour
     public IEnumerable<SpellDescriptor> SpellDescriptors { get; private set; }
     public IEnumerable<SpellObject> SpellObjects { get; private set; }
 
-    RegionManager regionManager;
-    WizardManager wizardManager;
-
     int nextId = 0;
 
     public SpellManager()
@@ -20,15 +17,9 @@ public class SpellManager : MonoBehaviour
         SpellObjects = SpellParser.FetchObjects();
     }
 
-    public void Awake()
-    {
-        regionManager = GetComponent<RegionManager>();
-        wizardManager = GetComponent<WizardManager>();
-    }
-
     public Spell GenerateRandomSpell(Wizard wizard)
     {
-        var rand = new System.Random();
+        var rand = new System.Random(nextId);
         var descriptor = SpellDescriptors.ElementAt(rand.Next(SpellDescriptors.Count()));
         var obj = SpellObjects.ElementAt(rand.Next(SpellObjects.Count()));
 
