@@ -18,8 +18,6 @@ public class GameManager : MonoBehaviour
     public RegionDetailsMenu regionDetailsMenu;
     public NotificationManager notificationManager;
 
-    public float agingMultiplier = 1f;
-
     Wizard playerWizard;
     public Wizard PlayerWizard
     {
@@ -76,7 +74,7 @@ public class GameManager : MonoBehaviour
             notificationManager.QueueNotification("You've researched the " + playerWizard.CurrentSpell.Name + " spell!");
             notificationManager.QueueNotification("Promote your spell! You can change which region you're promoting in by clicking the region icon.", 8f);
 
-            spellHistoryMenu.UpdateSpellList();
+            spellHistoryMenu.UpdateUI();
 
             regionManager.AddRandomSpellsToAllRegions();
 
@@ -96,8 +94,10 @@ public class GameManager : MonoBehaviour
 
         targetRegion.AddWizard(playerWizard);
         currentRegion = targetRegion;
-  
+
         //Debug.Log("Clicked to travel to the " + currentRegion.InternalName + " region! updated visiters = " + currentRegion.VisitingWizards.Count);
+
+        gameObject.SendMessage("UpdateUI");
     }
 
     float popularityIntervalTimer = 0f;
