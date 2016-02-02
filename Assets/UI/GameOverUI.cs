@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 public class GameOverUI : MonoBehaviour
 {
@@ -10,13 +12,14 @@ public class GameOverUI : MonoBehaviour
     public WizardDetailsUI wizardDetailsUI;
 
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         gameObject.SetActive(false);
-	}
+    }
 
     public void Init()
     {
-        Debug.Log(" Initing game over!");
+        Debug.Log("Initing game over!");
 
         gameObject.SetActive(true);
 
