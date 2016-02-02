@@ -1,9 +1,11 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
-public class MenuPanel : MonoBehaviour {
-
+public class MenuPanel : MonoBehaviour
+{
     public enum TransitionDir { Left, Right };
 
     public RectTransform panel;
@@ -19,7 +21,7 @@ public class MenuPanel : MonoBehaviour {
 
     TransitionCallbackDelegate callback;
 
-    public void TransitionOn(MenuManager.MenuTransitionType transitionType, TransitionDir dir=TransitionDir.Left,  TransitionCallbackDelegate callback = null, float speed=600.0f)
+    public void TransitionOn(MenuManager.MenuTransitionType transitionType, TransitionDir dir = TransitionDir.Left, TransitionCallbackDelegate callback = null, float speed = 600.0f)
     {
         //this.speed = 600.0f;
         this.transitionType = transitionType;
@@ -39,8 +41,8 @@ public class MenuPanel : MonoBehaviour {
             // todo: handle other transitions  
         }
     }
-    
-    public void TransitionOff(MenuManager.MenuTransitionType transitionType, TransitionDir dir=TransitionDir.Right, TransitionCallbackDelegate callback=null, float speed=600.0f)
+
+    public void TransitionOff(MenuManager.MenuTransitionType transitionType, TransitionDir dir = TransitionDir.Right, TransitionCallbackDelegate callback = null, float speed = 600.0f)
     {
         this.transitionType = transitionType;
         this.callback = callback;
