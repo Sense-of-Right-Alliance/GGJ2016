@@ -122,7 +122,7 @@ Ghastly	3	2	0	1	2	2	4
 Terrible	3	2	0	1	2	2	4
 No-good	3	2	0	1	2	2	4
 Evil	3	2	0	1	2	2	4
-Villanous	3	2	0	1	2	2	4
+Villainous	3	2	0	1	2	2	4
 Low	3	2	0	1	2	2	4
 Superbad	3	2	0	1	2	2	4
 Abominable	3	2	0	1	2	2	4
