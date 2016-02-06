@@ -12,6 +12,8 @@ public class RegionSpellsUI : MonoBehaviour
     public GameObject spellList;
     public GameManager gameManager;
 
+    public bool yourWizardOnly = false;
+
     List<GameObject> listItems = new List<GameObject>();
 
 
@@ -44,33 +46,57 @@ public class RegionSpellsUI : MonoBehaviour
     {
         ClearSpellListItems();
 
-        List<RegionalSpell> topSpells = currentRegion.TopSpells;
-
         GameObject listItem;
-        for (int i = 0; i < topSpells.Count; i++)
+        if (yourWizardOnly)
         {
-            listItem = GetListItem();
-            listItem.transform.SetParent(spellList.transform, false);
-            listItem.GetComponent<RegionSpellListItem>().Init(i+1, topSpells[i]);
-
-            if (gameManager.PlayerWizard == null) continue;
-
-            // Color the text
-            if (topSpells[i].Spell.Id == gameManager.PlayerWizard.CurrentSpell.Id)
+            RegionalSpell rSpell;
+            if (gameManager.PlayerWizard.CurrentSpell.RegionalSpells.ContainsKey(currentRegion))
             {
+                listItem = GetListItem();
+                listItem.transform.SetParent(spellList.transform, false);
+
+                rSpell = gameManager.PlayerWizard.CurrentSpell.RegionalSpells[currentRegion];
+                listItem.GetComponent<RegionSpellListItem>().Init(currentRegion.TopSpells.IndexOf(rSpell), rSpell);
                 listItem.GetComponent<Text>().color = Color.green;
-
             }
-            else if (gameManager.PlayerWizard.PastSpells.Any(s => s.Id == topSpells[i].Spell.Id))
+
+            for (int i = 0; i < gameManager.PlayerWizard.PastSpells.Count; i++)
             {
+                listItem = GetListItem();
+                listItem.transform.SetParent(spellList.transform, false);
+
+                rSpell = gameManager.PlayerWizard.PastSpells[i].RegionalSpells[currentRegion];
+                listItem.GetComponent<RegionSpellListItem>().Init(currentRegion.TopSpells.IndexOf(rSpell), rSpell);
                 listItem.GetComponent<Text>().color = Color.yellow;
             }
-            else
-            {
-                listItem.GetComponent<Text>().color = Color.white;
-            }
-
+        }
+        else
+        {
+            List<RegionalSpell> topSpells = currentRegion.TopSpells;
             
+            for (int i = 0; i < topSpells.Count; i++)
+            {
+                listItem = GetListItem();
+                listItem.transform.SetParent(spellList.transform, false);
+                listItem.GetComponent<RegionSpellListItem>().Init(i+1, topSpells[i]);
+
+                if (gameManager.PlayerWizard == null) continue;
+
+                // Color the text
+                if (topSpells[i].Spell.Id == gameManager.PlayerWizard.CurrentSpell.Id)
+                {
+                    listItem.GetComponent<Text>().color = Color.green;
+
+                }
+                else if (gameManager.PlayerWizard.PastSpells.Any(s => s.Id == topSpells[i].Spell.Id))
+                {
+                    listItem.GetComponent<Text>().color = Color.yellow;
+                }
+                else
+                {
+                    listItem.GetComponent<Text>().color = Color.white;
+                }
+            }
         }
     }
 

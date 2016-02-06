@@ -19,7 +19,7 @@ public class SpellHistoryMenu : MonoBehaviour
 
     public void UpdateUI()
     {
-        RefreshSpellList();
+       if (gameManager.PlayerWizard != null && gameManager.PlayerWizard.CurrentSpell != null) RefreshSpellList();
     }
 
     public void RefreshSpellList()

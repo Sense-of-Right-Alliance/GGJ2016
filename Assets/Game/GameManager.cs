@@ -65,7 +65,7 @@ public class GameManager : MonoBehaviour
 
     public void ResearchNewSpellClicked(bool fromFirstScreen=false)
     {
-        if (wizardNameField && wizardNameField.text != "")
+        if (wizardName != null)
         {
             if (fromFirstScreen) playerWizard = wizardManager.GenerateWizard(wizardName);
 

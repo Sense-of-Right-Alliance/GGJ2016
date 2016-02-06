@@ -6,7 +6,8 @@ using System.Collections.Generic;
 public class RegionDetailsMenu : MonoBehaviour
 {
     public Text nameText;
-    public RegionSpellsUI regionSpellsUI;
+    public RegionSpellsUI regionSpellsList;
+    public RegionSpellsUI yourRegionSpellsList;
     public RegionManager regionManager;
     public GameObject playerSpellStatus;
     public GameManager gameManager;
@@ -32,8 +33,8 @@ public class RegionDetailsMenu : MonoBehaviour
         if (!nameText)
             nameText = transform.FindChild("Name").GetComponent<Text>();
 
-        if (!regionSpellsUI)
-            regionSpellsUI = transform.FindChild("Region Spells").GetComponent<RegionSpellsUI>();
+        if (!regionSpellsList)
+            regionSpellsList = transform.FindChild("Region Spells").GetComponent<RegionSpellsUI>();
 
         if (!regionManager)
             regionManager = GameObject.FindObjectOfType<RegionManager>();
@@ -54,7 +55,8 @@ public class RegionDetailsMenu : MonoBehaviour
 
         nameText.text = currentRegion.DisplayedName;
 
-        regionSpellsUI.Init(currentRegion);
+        regionSpellsList.Init(currentRegion);
+        yourRegionSpellsList.Init(currentRegion);
 
         gameObject.SetActive(true);
     }
@@ -78,6 +80,7 @@ public class RegionDetailsMenu : MonoBehaviour
             playerSpellStatus.GetComponent<Text>().text = "Spell Not Introduced";
         }
 
-        regionSpellsUI.UpdateSpells();
+        regionSpellsList.UpdateSpells();
+        yourRegionSpellsList.UpdateSpells();
     }
 }

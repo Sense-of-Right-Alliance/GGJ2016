@@ -14,6 +14,10 @@ public class WizardIcon : MonoBehaviour
 
     public bool inRegion = false;
 
+    public float distance = 0f;
+    public float rate = 0f;
+    public float timeToTravel = 0f;
+
     GameManager gameManager;
     // Use this for initialization
     void Start ()
@@ -62,7 +66,13 @@ public class WizardIcon : MonoBehaviour
         RectTransform rect = GetComponent<RectTransform>();
         Vector3 p = rect.position;
 
-        progress += Time.deltaTime * travelSpeed;
+        float distance = Vector3.Distance(start, end);
+
+        this.distance = distance;
+        this.timeToTravel = (distance / travelSpeed);
+        this.rate = (1 / (distance / travelSpeed));
+
+        progress += Time.deltaTime * (1/(distance/travelSpeed));
 
         if (progress >= 1f)
         {
